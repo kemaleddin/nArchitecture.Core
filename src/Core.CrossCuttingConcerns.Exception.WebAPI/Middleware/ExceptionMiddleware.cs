@@ -55,7 +55,7 @@ public class ExceptionMiddleware
                 User = _contextAccessor.HttpContext?.User.Identity?.Name ?? "?"
             };
 
-        _loggerService.Information(JsonSerializer.Serialize(logDetail));
+        _loggerService.Error(JsonSerializer.Serialize(logDetail));
         return Task.CompletedTask;
     }
 }

@@ -40,7 +40,6 @@ public interface IAsyncRepository<TEntity, TEntityId> : IQuery<TEntity>
 
     Task<bool> AnyAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool withDeleted = false,
         CancellationToken cancellationToken = default
     );

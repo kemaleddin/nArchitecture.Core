@@ -110,7 +110,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -132,7 +135,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
@@ -153,7 +159,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -163,7 +172,6 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
 
     public async Task<bool> AnyAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool withDeleted = false,
         CancellationToken cancellationToken = default
     )
@@ -235,7 +243,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         return queryable.FirstOrDefault(predicate);
@@ -255,7 +266,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -279,7 +293,10 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
         if (include != null)
+        {
+            queryable = queryable.IgnoreAutoIncludes();
             queryable = include(queryable);
+        }
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -289,7 +306,6 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
 
     public bool Any(
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
         bool withDeleted = false
     )
     {
