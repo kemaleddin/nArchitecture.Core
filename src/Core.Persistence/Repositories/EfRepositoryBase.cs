@@ -98,22 +98,27 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
     public async Task<IPaginate<TEntity>> GetListAsync(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         int index = 0,
         int size = 10,
         bool withDeleted = false,
         bool enableTracking = true,
+        bool autoInclude = true,
         CancellationToken cancellationToken = default
     )
     {
         IQueryable<TEntity> queryable = Query();
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if (include != null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -125,20 +130,25 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
 
     public async Task<TEntity?> GetAsync(
         Expression<Func<TEntity, bool>> predicate,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         bool withDeleted = false,
         bool enableTracking = true,
+        bool autoInclude = true,
         CancellationToken cancellationToken = default
     )
     {
         IQueryable<TEntity> queryable = Query();
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if (include != null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         return await queryable.FirstOrDefaultAsync(predicate, cancellationToken);
@@ -147,22 +157,27 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
     public async Task<IPaginate<TEntity>> GetListByDynamicAsync(
         DynamicQuery dynamic,
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         int index = 0,
         int size = 10,
         bool withDeleted = false,
         bool enableTracking = true,
+        bool autoInclude = true,
         CancellationToken cancellationToken = default
     )
     {
         IQueryable<TEntity> queryable = Query().ToDynamic(dynamic);
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if (include != null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -234,19 +249,24 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
 
     public TEntity? Get(
         Expression<Func<TEntity, bool>> predicate,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         bool withDeleted = false,
-        bool enableTracking = true
+        bool enableTracking = true,
+        bool autoInclude = true
     )
     {
         IQueryable<TEntity> queryable = Query();
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if (include != null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         return queryable.FirstOrDefault(predicate);
@@ -255,21 +275,26 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
     public IPaginate<TEntity> GetList(
         Expression<Func<TEntity, bool>>? predicate = null,
         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>>? orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         int index = 0,
         int size = 10,
         bool withDeleted = false,
-        bool enableTracking = true
+        bool enableTracking = true,
+        bool autoInclude = true
     )
     {
         IQueryable<TEntity> queryable = Query();
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if (include != null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
@@ -282,21 +307,26 @@ public class EfRepositoryBase<TEntity, TEntityId, TContext>
     public IPaginate<TEntity> GetListByDynamic(
         DynamicQuery dynamic,
         Expression<Func<TEntity, bool>>? predicate = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>>? include = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object?>>? include = null,
         int index = 0,
         int size = 10,
         bool withDeleted = false,
-        bool enableTracking = true
+        bool enableTracking = true,
+        bool autoInclude = true
     )
     {
         IQueryable<TEntity> queryable = Query().ToDynamic(dynamic);
         if (!enableTracking)
             queryable = queryable.AsNoTracking();
-        if (include != null)
+
+        if (include != null || !autoInclude)
         {
             queryable = queryable.IgnoreAutoIncludes();
-            queryable = include(queryable);
         }
+
+        if(include !=null)
+            queryable = include(queryable);
+
         if (withDeleted)
             queryable = queryable.IgnoreQueryFilters();
         if (predicate != null)
